@@ -22,16 +22,18 @@ public class SmartHomeDialog extends Dialog {
 
     public SmartHomeDialog() {
         // Loading Model
+        SmartHomeDialog.SmartHomeBehavior smartHomeBehavior;
         try {
-            SmartHomeDialog.SmartHomeBehavior smartHomeBehavior = new SmartHomeDialog.SmartHomeBehavior();
+            smartHomeBehavior = new SmartHomeDialog.SmartHomeBehavior();
             addComponent(smartHomeBehavior);
         } catch (URISyntaxException e) {
             e.printStackTrace();
+            return;
         }
 
         // Starting Mix Service
         try {
-            Mix = new MixSpeechNLU("0.0.0.0", 50001);
+            Mix = new MixSpeechNLU("0.0.0.0", 50001, retrieveComponent(TokenComponent.class));
             Mix.StartService();
             //Mix.StartRecording();
         } catch (Exception e) {
@@ -41,11 +43,10 @@ public class SmartHomeDialog extends Dialog {
 
 
     public static class SmartHomeBehavior extends SimpleStateBehavior {
-
-        private RuleComponent rc;
-        private TokenComponent tc;
-        private CoordinationComponent cc;
-        private PresentationComponent pc;
+        public RuleComponent rc;
+        public TokenComponent tc;
+        public CoordinationComponent cc;
+        public PresentationComponent pc;
 
         public SmartHomeBehavior() throws URISyntaxException {
             super("/sc/smarthome");
@@ -130,7 +131,7 @@ public class SmartHomeDialog extends Dialog {
 
             rc.addRule("light_on", () -> {
                 tc.getTokens().stream()
-                        .filter(t -> t.payloadEquals("intent", "ligt_on"))
+                        .filter(t -> t.payloadEquals("intent", "light_on"))
                         .forEach(t -> {
                             cc.add(() -> {
                                 System.out.println("Light on!");

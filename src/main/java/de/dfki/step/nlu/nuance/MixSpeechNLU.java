@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dfki.step.core.TokenComponent;
 import de.dfki.step.nlu.nuance.json.*;
 import de.dfki.step.nlu.nuance.json.response.ASR_NLU_Response;
 import de.dfki.step.nlu.nuance.json.response.Entity;
@@ -77,15 +78,17 @@ public class MixSpeechNLU {
 
     Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).disableHtmlEscaping().create();
 
+    TokenComponent token;
 
     /**
      * Create a Nuance Mix Service
      * @param audioServerIP IP to bind for the TCP port which recieves the audio data
      * @param audioServerPort port to bind for the TCP port which recieves the audio data
      */
-    public MixSpeechNLU(String audioServerIP, int audioServerPort) throws IOException {
+    public MixSpeechNLU(String audioServerIP, int audioServerPort, TokenComponent token) throws IOException {
         this.serverIP = audioServerIP;
         this.serverPort = audioServerPort;
+        this.token = token;
 
         this.pipedOutputStream = new PipedOutputStream();
         this.pipedInputStream = new PipedInputStream(this.pipedOutputStream);
@@ -348,7 +351,7 @@ public class MixSpeechNLU {
         }
 
         Token intentToken = new Token().add("intent", intent.intent).add("confidence", intent.confidence);
-        //tc.addToken(intentToken);
+        this.token.addToken(intentToken);
     }
 
 
@@ -504,34 +507,6 @@ public class MixSpeechNLU {
                         MixIntent mixIntent = new MixIntent();
                         List<MixConcepts> concepts = new ArrayList<MixConcepts>();
 
-                        // transfer mission parameters Entities
-                        if(JSONIntent.concepts != null && JSONIntent.concepts.mission_parameter != null)
-                            for (Entity var : JSONIntent.concepts.mission_parameter) {
-                                MixConcepts va2 = new MixConcepts();
-                                va2.Entity = "mission_parameter";
-
-                                if(var.value == null || var.value == "")
-                                    va2.value = var.literal;
-                                else
-                                    va2.value = var.value;
-
-                                concepts.add(va2);
-                            }
-
-                        // Transfer Units Entities
-                        if(JSONIntent.concepts != null && JSONIntent.concepts.unit != null)
-                            for (Entity var : JSONIntent.concepts.unit) {
-                                MixConcepts va2 = new MixConcepts();
-                                va2.Entity = "unit";
-
-                                if(var.value == null || var.value == "")
-                                    va2.value = var.literal;
-                                else
-                                    va2.value = var.value;
-
-                                concepts.add(va2);
-                            }
-
                         // Create Intent Object
                         mixIntent.concepts = concepts;
                         mixIntent.confidence = JSONIntent.action.intent.confidence;
@@ -540,7 +515,7 @@ public class MixSpeechNLU {
                         // Output Entities as String for debugging purpose
                         String entitiesAsString = "";
                         for(MixConcepts var : mixIntent.concepts)
-                            entitiesAsString = entitiesAsString + var.Entity + ":"  + var.value + ", ";
+                            entitiesAsString = entitiesAsString + var.entity + ":"  + var.value + ", ";
 
                         if(entitiesAsString.length() > 3)
                             entitiesAsString = entitiesAsString.substring(0,entitiesAsString.length() - 2);
