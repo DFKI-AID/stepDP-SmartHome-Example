@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" name="smarthome" qt:editorversion="4.9.2" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" initial="Home">
+    <qt:editorinfo initialGeometry="41.97;50.16;-20;-20;40;40"/>
+    <state id="Home">
+        <qt:editorinfo scenegeometry="131.04;170.96;71.04;120.96;120;100" geometry="131.04;170.96;-60;-50;120;100"/>
+        <transition type="external" event="question" target="TemperatureValue">
+            <qt:editorinfo endTargetFactors="8.64;50"/>
+        </transition>
+        <transition type="external" event="play" target="RadioPlayback">
+            <qt:editorinfo endTargetFactors="52.06;8.50" movePoint="-27.64;1.02"/>
+        </transition>
+    </state>
+    <state id="TemperatureValue">
+        <qt:editorinfo scenegeometry="412.56;170.96;352.56;120.96;163.38;100" geometry="412.56;170.96;-60;-50;163.38;100"/>
+        <transition type="external" event="back" target="Home">
+            <qt:editorinfo endTargetFactors="89.14;68.54" movePoint="12.28;6.14" startTargetFactors="9.36;62.44"/>
+        </transition>
+    </state>
+    <state id="RadioPlayback">
+        <qt:editorinfo scenegeometry="102.18;374.68;42.18;324.68;177.73;124.71" geometry="102.18;374.68;-60;-50;177.73;124.71"/>
+        <transition type="external" event="stop" target="Home">
+            <qt:editorinfo endTargetFactors="73.40;84.48" movePoint="63.47;3.07" startTargetFactors="70.13;7.79"/>
+        </transition>
+    </state>
+</scxml>
