@@ -35,7 +35,6 @@ public class SmartHomeDialog extends Dialog {
         try {
             Mix = new MixSpeechNLU("0.0.0.0", 50001, retrieveComponent(TokenComponent.class));
             Mix.StartService();
-            //Mix.StartRecording();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,6 +87,7 @@ public class SmartHomeDialog extends Dialog {
                                 System.out.println("Play radio!");
                                 stateHandler.fire("play");
 
+
                             }).attachOrigin(t);
                         });
             });
@@ -110,7 +110,7 @@ public class SmartHomeDialog extends Dialog {
                         .forEach(t -> {
                             cc.add(() -> {
                                 System.out.println("Ask to change temperature!");
-                                stateHandler.fire("goodbye");
+                                stateHandler.fire("question");
 
                             }).attachOrigin(t);
                         });
@@ -122,12 +122,11 @@ public class SmartHomeDialog extends Dialog {
                         .forEach(t -> {
                             cc.add(() -> {
                                 System.out.println("Temperature changed!");
-                                stateHandler.fire("goodbye");
+                                stateHandler.fire("back");
 
                             }).attachOrigin(t);
                         });
             });
-
 
             rc.addRule("light_on", () -> {
                 tc.getTokens().stream()
