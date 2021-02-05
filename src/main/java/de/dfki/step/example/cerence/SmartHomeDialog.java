@@ -1,5 +1,11 @@
 package de.dfki.step.example.cerence;
 
+import de.dfki.step.blackboard.Rule;
+import de.dfki.step.blackboard.Token;
+import de.dfki.step.blackboard.conditions.PatternCondition;
+import de.dfki.step.blackboard.patterns.Pattern;
+import de.dfki.step.blackboard.patterns.PatternBuilder;
+import de.dfki.step.blackboard.rules.SimpleRule;
 import de.dfki.step.cerence.NLUController;
 import de.dfki.step.dialog.Dialog;
 import de.dfki.step.kb.semantic.Type;
@@ -39,6 +45,43 @@ public class SmartHomeDialog extends Dialog {
                     "A556_C4721",
                     "eng-USA");
             cerence.StartAudioServer("0.0.0.0", 50002);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Adding Rules
+        try {
+            Rule ligtOnRule = new SimpleRule(tokens -> {
+                Token t = tokens[0];
+                if (!t.isSet("rooms")) {
+                    System.out.println("Light on everywhere?");
+                } else {
+                    String room = t.getString("rooms");
+                    System.out.println("Light on in " + room + "!");
+                }
+            }, "LightOnRule");
+            Pattern p = null;
+            p = new PatternBuilder("light_on", this.getKB()).build();
+            ligtOnRule.setCondition(new PatternCondition(p));
+            this.getBlackboard().addRule(ligtOnRule);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Rule ligtOffRule = new SimpleRule(tokens -> {
+                Token t = tokens[0];
+                if (!t.isSet("rooms")) {
+                    System.out.println("Light off everywhere?");
+                } else {
+                    String room = t.getString("rooms");
+                    System.out.println("Light off in " + room + "!");
+                }
+            }, "LightOffRule");
+            Pattern p = null;
+            p = new PatternBuilder("light_off", this.getKB()).build();
+            ligtOffRule.setCondition(new PatternCondition(p));
+            this.getBlackboard().addRule(ligtOffRule);
         } catch (Exception e) {
             e.printStackTrace();
         }
