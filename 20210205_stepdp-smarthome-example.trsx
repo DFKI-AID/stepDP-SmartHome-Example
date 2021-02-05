@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project xmlns:nuance="https://developer.nuance.com/mix/nlu/trsx" xml:lang="eng-USA" nuance:version="2.4">
+    <metadata>
+        <entry key="created_at">2019-10-28 09:20:51+00:00</entry>
+        <entry key="created_at">2019-10-28 16:30:12+00:00</entry>
+        <entry key="created_by">Julian Wolter</entry>
+        <entry key="created_by">julian.wolter@dfki.de</entry>
+    </metadata>
+    <sources>
+        <source name="nuance_custom_data" displayName="nuance_custom_data" version="1.0" type="CUSTOM" useForOOV="true"/>
+    </sources>
+    <ontology base="http://localhost:8080/resources/ontology-1.0.xml">
+        <intents>
+            <intent name="ask_temperature">
+                <links>
+                    <link conceptref="rooms"/>
+                </links>
+            </intent>
+            <intent name="light_off">
+                <links>
+                    <link conceptref="rooms"/>
+                </links>
+            </intent>
+            <intent name="light_on">
+                <links>
+                    <link conceptref="rooms"/>
+                </links>
+            </intent>
+            <intent name="play_radio">
+                <links>
+                    <link conceptref="radios"/>
+                </links>
+            </intent>
+            <intent name="stop_radio"/>
+            <intent name="value_temperature">
+                <links>
+                    <link conceptref="nuance_TEMPERATURE"/>
+                </links>
+            </intent>
+        </intents>
+        <concepts>
+            <concept name="radios"/>
+            <concept name="rooms"/>
+        </concepts>
+    </ontology>
+    <dictionaries>
+        <dictionary conceptref="radios">
+            <entry literal="pop" value="pop"/>
+            <entry literal="rock" value="rock"/>
+        </dictionary>
+        <dictionary conceptref="rooms">
+            <entry literal="bedroom" value="bedroom"/>
+            <entry literal="kitchen" value="kitchen"/>
+            <entry literal="living room" value="living"/>
+        </dictionary>
+    </dictionaries>
+    <samples>
+        <sample intentref="ask_temperature" count="1">Change the temperature of the<annotation conceptref="rooms">kitchen</annotation>
+        </sample>
+        <sample intentref="value_temperature" count="1">Heat it up to<annotation conceptref="nuance_TEMPERATURE">18 . 5 C</annotation>
+        </sample>
+        <sample intentref="ask_temperature" count="1">Heat up the<annotation conceptref="rooms">living room</annotation>
+        </sample>
+        <sample intentref="ask_temperature" count="1">New temperature for<annotation conceptref="rooms">bedroom</annotation>
+        </sample>
+        <sample intentref="play_radio" count="1">Play<annotation conceptref="radios">rock</annotation>radio</sample>
+        <sample intentref="value_temperature" count="1">Set it to<annotation conceptref="nuance_TEMPERATURE">twenty three degrees celsius</annotation>
+        </sample>
+        <sample intentref="ask_temperature" count="1">Set the temperature of the<annotation conceptref="rooms">bedroom</annotation>
+        </sample>
+        <sample intentref="stop_radio" count="1">Stop radio</sample>
+        <sample intentref="stop_radio" count="1">Stop radio playback</sample>
+        <sample intentref="play_radio" count="1">Stream the<annotation conceptref="radios">pop</annotation>radio</sample>
+        <sample intentref="light_off" count="1">Switch the light off in the<annotation conceptref="rooms">bedroom</annotation>
+        </sample>
+        <sample intentref="light_on" count="1">Switch the light on in the<annotation conceptref="rooms">living room</annotation>
+        </sample>
+        <sample intentref="value_temperature" count="1">Temperature should be<annotation conceptref="nuance_TEMPERATURE">20 C</annotation>
+        </sample>
+        <sample intentref="light_off" count="1">Turn off the light in the<annotation conceptref="rooms">kitchen</annotation>
+        </sample>
+        <sample intentref="light_on" count="1">Turn the light on in the<annotation conceptref="rooms">kitchen</annotation>
+        </sample>
+    </samples>
+</project>
