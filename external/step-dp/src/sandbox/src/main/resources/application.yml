@@ -1,3 +1,0 @@
-logging.level.root: INFO
-logging.level.de.dfki.tocalog.kb: WARN
-server.port: 34567
