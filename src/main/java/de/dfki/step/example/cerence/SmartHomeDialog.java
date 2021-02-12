@@ -1,5 +1,6 @@
 package de.dfki.step.example.cerence;
 
+import de.dfki.step.blackboard.IToken;
 import de.dfki.step.blackboard.Rule;
 import de.dfki.step.blackboard.Token;
 import de.dfki.step.blackboard.conditions.PatternCondition;
@@ -52,7 +53,7 @@ public class SmartHomeDialog extends Dialog {
         // Adding Rules
         try {
             Rule ligtOnRule = new SimpleRule(tokens -> {
-                Token t = tokens[0];
+                IToken t = tokens[0];
                 if (!t.isSet("rooms")) {
                     System.out.println("Light on everywhere?");
                 } else {
@@ -70,7 +71,7 @@ public class SmartHomeDialog extends Dialog {
 
         try {
             Rule ligtOffRule = new SimpleRule(tokens -> {
-                Token t = tokens[0];
+                IToken t = tokens[0];
                 if (!t.isSet("rooms")) {
                     System.out.println("Light off everywhere?");
                 } else {
