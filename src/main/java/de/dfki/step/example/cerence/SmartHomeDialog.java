@@ -2,7 +2,7 @@ package de.dfki.step.example.cerence;
 
 import de.dfki.step.blackboard.IToken;
 import de.dfki.step.blackboard.Rule;
-import de.dfki.step.blackboard.Token;
+import de.dfki.step.blackboard.BasicToken;
 import de.dfki.step.blackboard.conditions.PatternCondition;
 import de.dfki.step.blackboard.patterns.Pattern;
 import de.dfki.step.blackboard.patterns.PatternBuilder;
