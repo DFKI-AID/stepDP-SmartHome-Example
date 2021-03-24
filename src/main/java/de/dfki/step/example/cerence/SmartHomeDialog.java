@@ -20,10 +20,10 @@ public class SmartHomeDialog extends Dialog {
     public SmartHomeDialog() {
         // Adding types to KB
         try {
-            Type type_start_radio = new Type("start_radio", this.getKB());
+            Type type_start_radio = new Type("play_radio", this.getKB());
             Type type_stop_radio = new Type("stop_radio", this.getKB());
             Type type_ask_temperature = new Type("ask_temperature", this.getKB());
-            Type type_set_temperature = new Type("set_temperature", this.getKB());
+            Type type_set_temperature = new Type("value_temperature", this.getKB());
             Type type_light_on = new Type("light_on", this.getKB());
             Type type_light_off = new Type("light_off", this.getKB());
 
@@ -48,43 +48,47 @@ public class SmartHomeDialog extends Dialog {
             cerence.StartAudioServer("0.0.0.0", 50002);
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
 
         // Adding Rules
+        Rule ligtOnRule = new SimpleRule(tokens -> {
+            IToken t = tokens[0];
+            if (!t.isSet("rooms")) {
+                System.out.println("Light on everywhere?");
+            } else {
+                String room = t.getString("rooms");
+                System.out.println("Light on in " + room + "!");
+            }
+        }, "LightOnRule");
+        Pattern p1 = null;
         try {
-            Rule ligtOnRule = new SimpleRule(tokens -> {
-                IToken t = tokens[0];
-                if (!t.isSet("rooms")) {
-                    System.out.println("Light on everywhere?");
-                } else {
-                    String room = t.getString("rooms");
-                    System.out.println("Light on in " + room + "!");
-                }
-            }, "LightOnRule");
-            Pattern p = null;
-            p = new PatternBuilder("light_on", this.getKB()).build();
-            ligtOnRule.setCondition(new PatternCondition(p));
-            this.getBlackboard().addRule(ligtOnRule);
+            p1 = new PatternBuilder("light_on", this.getKB()).build();
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
+        ligtOnRule.setCondition(new PatternCondition(p1));
+        this.getBlackboard().addRule(ligtOnRule);
 
+
+        Rule ligtOffRule = new SimpleRule(tokens -> {
+            IToken t = tokens[0];
+            if (!t.isSet("rooms")) {
+                System.out.println("Light off everywhere?");
+            } else {
+                String room = t.getString("rooms");
+                System.out.println("Light off in " + room + "!");
+            }
+        }, "LightOffRule");
+        Pattern p2 = null;
         try {
-            Rule ligtOffRule = new SimpleRule(tokens -> {
-                IToken t = tokens[0];
-                if (!t.isSet("rooms")) {
-                    System.out.println("Light off everywhere?");
-                } else {
-                    String room = t.getString("rooms");
-                    System.out.println("Light off in " + room + "!");
-                }
-            }, "LightOffRule");
-            Pattern p = null;
-            p = new PatternBuilder("light_off", this.getKB()).build();
-            ligtOffRule.setCondition(new PatternCondition(p));
-            this.getBlackboard().addRule(ligtOffRule);
+            p2 = new PatternBuilder("light_off", this.getKB()).build();
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
+        ligtOffRule.setCondition(new PatternCondition(p2));
+        this.getBlackboard().addRule(ligtOffRule);
     }
 }
